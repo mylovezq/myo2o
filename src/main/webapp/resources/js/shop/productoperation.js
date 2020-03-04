@@ -1,20 +1,18 @@
 $(function() {
 	var productId = getQueryString('productId');
-	var shopId = 1;
-	var infoUrl = '/myo2o/shop/getproductbyid?productId=' + productId;
-	var categoryUrl = '/myo2o/shop/getproductcategorylistbyshopId?shopId='
-			+ shopId;
-	var productPostUrl = '/myo2o/shop/modifyproduct';
+	var infoUrl = '/myo2o/shopadmin/getproductbyid?productId=' + productId;
+	var categoryUrl = '/myo2o/shopadmin/getproductcategorylistbyshopId';
+	var productPostUrl = '/myo2o/shopadmin/modifyproduct';
 	var isEdit = false;
 	if (productId) {
-		getInfo(productId);
+		getInfo();
 		isEdit = true;
 	} else {
-		getCategory(shopId);
-		productPostUrl = '/myo2o/shop/addproduct';
+		getCategory();
+		productPostUrl = '/myo2o/shopadmin/addproduct';
 	}
 
-	function getInfo(id) {
+	function getInfo() {
 		$
 				.getJSON(
 						infoUrl,
@@ -48,6 +46,7 @@ $(function() {
 						});
 	}
 
+	// 为商品添加操作提供该店铺下的所有商品类别列表
 	function getCategory() {
 		$.getJSON(categoryUrl, function(data) {
 			if (data.success) {
@@ -55,8 +54,8 @@ $(function() {
 				var optionHtml = '';
 				productCategoryList.map(function(item, index) {
 					optionHtml += '<option data-value="'
-							+ item.productCategoryId + '">'
-							+ item.productCategoryName + '</option>';
+						+ item.productCategoryId + '">'
+						+ item.productCategoryName + '</option>';
 				});
 				$('#category').html(optionHtml);
 			}
@@ -115,7 +114,7 @@ $(function() {
 							$.toast('提交成功！');
 							$('#captcha_img').click();
 						} else {
-							$.toast('提交失败！');
+							$.toast(data.errMsg);
 							$('#captcha_img').click();
 						}
 					}

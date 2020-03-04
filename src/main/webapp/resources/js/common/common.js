@@ -26,6 +26,7 @@ common.getQueryString = function (name) {
 };
 
 
+
 /**
  * 初始化 picker
  */

@@ -50,6 +50,7 @@ public class ShopManagementController {
             if (currentShopObj == null) {
                 modelMap.put("redirect", Boolean.valueOf(true));
                 modelMap.put("url", "/myo2o/shopadmin/shoplist");
+                modelMap.put("msg", "当前店铺不存在！");
             } else {
                 Shop currentShop = (Shop) currentShopObj;
                 modelMap.put("redirect", Boolean.valueOf(false));
@@ -60,6 +61,7 @@ public class ShopManagementController {
             currentShop.setShopId(Long.valueOf(shopId));
             request.getSession().setAttribute("currentShop", currentShop);
             modelMap.put("redirect", Boolean.valueOf(false));
+            modelMap.put("shopId", currentShop.getShopId());
         }
         return modelMap;
     }
@@ -70,7 +72,7 @@ public class ShopManagementController {
         Map<String, Object> modelMap = new HashMap();
         PersonInfo user = new PersonInfo();
         user.setUserId(Long.valueOf(8L));
-        user.setName("测试名字");
+        user.setName("超级管理员");
         request.getSession().setAttribute("user", user);
         user = (PersonInfo) request.getSession().getAttribute("user");
         try {
@@ -141,9 +143,12 @@ public class ShopManagementController {
     private Map<String, Object> getShopById(HttpServletRequest request) {
         Map<String, Object> modelMap = new HashMap();
         Long shopId = Long.valueOf(HttpServletRequestUtil.getLong(request, "shopId"));
+//        Shop currentShop =   new Shop();
+//        currentShop.setShopId(shopId);
+//         request.getSession().setAttribute("currentShop",currentShop);
         if ((shopId.longValue() > -1L) && (shopId != null)) {
             try {
-                Shop shop = this.shopService.getByShopId(shopId.longValue());
+                Shop shop =shopService.getByShopId(shopId.longValue());
                 List<Area> areaList = this.areaService.getAreaList();
                 modelMap.put("shop", shop);
                 modelMap.put("areaList", areaList);
