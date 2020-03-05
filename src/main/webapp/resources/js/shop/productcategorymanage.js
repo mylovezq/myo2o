@@ -1,8 +1,7 @@
 $(function() {
-	var shopId = 1;
-	var listUrl = '/myo2o/shop/listproductcategorys?shopId=' + shopId;
-	var addUrl = '/myo2o/shop/addproductcategorys';
-	var deleteUrl = '/myo2o/shop/removeproductcategory';
+	var listUrl = '/myo2o/shopadmin/getproductcategorylist';
+	var addUrl = '/myo2o/shopadmin/addproductcategorys';
+	var deleteUrl = '/myo2o/shopadmin/removeproductcategory';
 
 	$
 			.getJSON(
@@ -81,7 +80,7 @@ $(function() {
 					$.toast('提交成功！');
 					getList();
 				} else {
-					$.toast('提交失败！');
+					$.toast(data.errMsg);
 				}
 			}
 		});
@@ -107,7 +106,6 @@ $(function() {
 						type : 'POST',
 						data : {
 							productCategoryId : target.dataset.id,
-							shopId : shopId
 						},
 						dataType : 'json',
 						success : function(data) {
@@ -115,7 +113,7 @@ $(function() {
 								$.toast('删除成功！');
 								getList();
 							} else {
-								$.toast('删除失败！');
+								$.toast(data.errMsg);
 							}
 						}
 					});

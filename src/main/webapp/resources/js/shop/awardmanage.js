@@ -1,8 +1,8 @@
 $(function() {
 	var shopId = 1;
-	var listUrl = '/myo2o/shop/listawardsbyshop?pageIndex=1&pageSize=9999&shopId='
+	var listUrl = '/myo2o/shopadmin/listawardsbyshop?pageIndex=1&pageSize=9999&shopId='
 			+ shopId;
-	var deleteUrl = '/myo2o/shop/modifyaward';
+	var deleteUrl = '/myo2o/shopadmin/modifyaward';
 
 	function getList() {
 		$.getJSON(listUrl, function(data) {
@@ -71,7 +71,7 @@ $(function() {
 						$.toast('操作成功！');
 						getList();
 					} else {
-						$.toast('操作失败！');
+						$.toast(data.errMsg);
 					}
 				}
 			});
@@ -85,7 +85,7 @@ $(function() {
 					function(e) {
 						var target = $(e.currentTarget);
 						if (target.hasClass('edit')) {
-							window.location.href = '/myo2o/shop/awardedit?awardId='
+							window.location.href = '/myo2o/shopadmin/awardedit?awardId='
 									+ e.currentTarget.dataset.id;
 						} else if (target.hasClass('delete')) {
 							deleteItem(e.currentTarget.dataset.id,
@@ -97,6 +97,6 @@ $(function() {
 					});
 
 	$('#new').click(function() {
-		window.location.href = '/myo2o/shop/awardedit';
+		window.location.href = '/myo2o/shopadmin/awardedit';
 	});
 });

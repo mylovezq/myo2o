@@ -1,21 +1,23 @@
 $(function() {
 	var awardId = getQueryString('awardId');
-	var shopId = 1;
-	var infoUrl = '/myo2o/shop/getawardbyid?awardId=' + awardId;
-	var awardPostUrl = '/myo2o/shop/modifyaward';
+	var infoUrl = '/myo2o/shopadmin/getawardbyid?awardId=' + awardId;
+	var awardPostUrl = '/myo2o/shopadmin/modifyaward';
 	var isEdit = false;
+	var date = new Date();
+	new Date(date).Format("yyyy-MM-dd");
 	if (awardId) {
 		getInfo(awardId);
 		isEdit = true;
 	} else {
-		awardPostUrl = '/myo2o/shop/addaward';
+		awardPostUrl = '/myo2o/shopadmin/addaward';
 	}
 
 	$("#pass-date").calendar({
-	    value: ['2017-12-31']
+
+	    value: [date]
 	});
 
-	function getInfo(id) {
+	function getInfo() {
 		$.getJSON(infoUrl, function(data) {
 			if (data.success) {
 				var award = data.award;
@@ -58,7 +60,7 @@ $(function() {
 					$.toast('提交成功！');
 					$('#captcha_img').click();
 				} else {
-					$.toast('提交失败！');
+					$.toast(data.errMsg);
 					$('#captcha_img').click();
 				}
 			}

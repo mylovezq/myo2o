@@ -2,7 +2,7 @@
 
  import org.springframework.stereotype.Controller;
  import org.springframework.web.bind.annotation.RequestMapping;
-
+ import org.springframework.web.bind.annotation.RequestMethod;
 
 
  @Controller
@@ -38,6 +38,18 @@
    public String productmanagement() {
      return "shop/productmanage";
    }
+
+   @RequestMapping({"/awardmanage"})
+     private String awardManage() {
+         return "shop/awardmanage";
+     }
+     @RequestMapping(value = "/awardedit", method = RequestMethod.GET)
+     private String awardEdit() {
+         return "shop/awardedit";
+     }
+
+
+
  }
 
 
