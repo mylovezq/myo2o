@@ -1,6 +1,5 @@
 $(function () {
-
-	function getlist(e) {
+	function getlist() {
 		$.ajax({
 			url : "/myo2o/shopadmin/getshoplist",
 			type : "get",
@@ -44,26 +43,6 @@ $(function () {
 			return '审核通过';
 		}
 	}
-
-
-	$('#log-out').click(function () {
-		$.ajax({
-			url : "/myo2o/shop/logout",
-			type : "post",
-			contentType : false,
-			processData : false,
-			cache : false,
-			success : function(data) {
-				if (data.success) {
-					window.location.href = '/myo2o/shop/ownerlogin';
-				}
-			},
-			error : function(data, error) {
-				alert(error);
-			}
-		});
-	});
-
 
 	getlist();
 });

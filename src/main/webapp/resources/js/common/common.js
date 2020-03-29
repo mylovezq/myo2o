@@ -1,6 +1,3 @@
-/**
- * Created by cheng on 2018/3/31.
- */
 
 //全局变量 命名空间
 var common = window.common || {};

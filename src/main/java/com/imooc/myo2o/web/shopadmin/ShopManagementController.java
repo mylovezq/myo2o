@@ -70,16 +70,14 @@ public class ShopManagementController {
     @ResponseBody
     private Map<String, Object> getShopList(HttpServletRequest request) {
         Map<String, Object> modelMap = new HashMap();
-        PersonInfo user = new PersonInfo();
-        user.setUserId(Long.valueOf(8L));
-        user.setName("超级管理员");
-        request.getSession().setAttribute("user", user);
-        user = (PersonInfo) request.getSession().getAttribute("user");
+        PersonInfo user = (PersonInfo) request.getSession().getAttribute("user");
         try {
             Shop shopCondition = new Shop();
             shopCondition.setOwnerId(user.getUserId());
-            ShopExecution se = this.shopService.getShopList(shopCondition, 0, 100);
+            ShopExecution se = this.shopService.getShopList(shopCondition, 0, 1000);
             modelMap.put("shopList", se.getShopList());
+            //将店铺放入session，作为权限
+            request.getSession().setAttribute("shopList", se.getShopList());
             modelMap.put("user", user);
             modelMap.put("success", Boolean.valueOf(true));
         } catch (Exception e) {
@@ -148,7 +146,7 @@ public class ShopManagementController {
 //         request.getSession().setAttribute("currentShop",currentShop);
         if ((shopId.longValue() > -1L) && (shopId != null)) {
             try {
-                Shop shop =shopService.getByShopId(shopId.longValue());
+                Shop shop = shopService.getByShopId(shopId.longValue());
                 List<Area> areaList = this.areaService.getAreaList();
                 modelMap.put("shop", shop);
                 modelMap.put("areaList", areaList);
@@ -193,7 +191,6 @@ public class ShopManagementController {
             return modelMap;
         }
 
-
         String shopStr = HttpServletRequestUtil.getString(request, "shopStr");
         ObjectMapper mapper = new ObjectMapper();
         Shop shop = null;
@@ -218,12 +215,12 @@ public class ShopManagementController {
 
         if ((shop != null) && (shopImg != null)) {
             try {
-//                PersonInfo user = (PersonInfo) request.getSession().getAttribute("user");
-                shop.setOwnerId(9l);
+                PersonInfo owner = (PersonInfo) request.getSession().getAttribute("user");
+                shop.setOwnerId(owner.getUserId());
                 ShopExecution se = this.shopService.addShop(shop, shopImg);
                 if (se.getState() == ShopStateEnum.CHECK.getState()) {
                     modelMap.put("success", Boolean.valueOf(true));
-
+//该用户可以操作的店铺列表
                     List<Shop> shopList = (List) request.getSession().getAttribute("shopList");
                     if ((shopList == null) || (shopList.size() == 0)) {
                         shopList = new ArrayList();
